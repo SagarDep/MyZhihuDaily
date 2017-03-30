@@ -1,7 +1,7 @@
 package com.example.zy1584.myzhihudaily.http;
 
 
-import com.example.zy1584.myzhihudaily.BaseApplication;
+import com.example.zy1584.myzhihudaily.base.BaseApplication;
 import com.example.zy1584.myzhihudaily.utils.NetUtils;
 
 import java.io.File;
@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Http {
 
-    public static String BASE_URL = "http://zealer.s1.natapp.cc/";
+    public static String BASE_URL = "http://news-at.zhihu.com/";
 
     private static OkHttpClient client;
     private static HttpService httpService;

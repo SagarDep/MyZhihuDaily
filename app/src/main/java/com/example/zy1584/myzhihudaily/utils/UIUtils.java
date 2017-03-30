@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.example.zy1584.myzhihudaily.BaseApplication;
+import com.example.zy1584.myzhihudaily.base.BaseApplication;
 
 
 /**

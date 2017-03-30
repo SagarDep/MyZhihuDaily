@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MyZhihuDaily</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">设置选项</string>
+    <string name="action_notification">通知</string>
+    <string name="action_night">夜间模式</string>
 </resources>

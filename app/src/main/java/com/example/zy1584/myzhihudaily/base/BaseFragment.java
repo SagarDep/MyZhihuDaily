@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import com.example.zy1584.myzhihudaily.interfaces.IView;
 import com.example.zy1584.myzhihudaily.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
+
+import butterknife.ButterKnife;
 import rx.subjects.BehaviorSubject;
 
 
@@ -52,6 +54,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         // 避免多次从xml中加载布局文件
         if (mContentView == null) {
             mContentView = inflater.inflate(getLayoutId(), null);
+            ButterKnife.bind(this, mContentView);
             initView(savedInstanceState);
             setListener();
             doBusiness(savedInstanceState);

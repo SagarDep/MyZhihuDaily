@@ -3,7 +3,7 @@ package com.example.zy1584.myzhihudaily.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.zy1584.myzhihudaily.BaseApplication;
+import com.example.zy1584.myzhihudaily.base.BaseApplication;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

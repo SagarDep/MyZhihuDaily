@@ -11,11 +11,8 @@ import java.util.HashMap;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public abstract class BasePresenter<V extends IView> implements IPresenter {
+public class BasePresenter<V extends IView> implements IPresenter {
     private WeakReference actReference;
-    protected V iView;
-
-    public abstract HashMap<String, IModel> getiModelMap();
 
     @Override
     public void attachView(IView iView) {
@@ -35,12 +32,14 @@ public abstract class BasePresenter<V extends IView> implements IPresenter {
         return (V) actReference.get();
     }
 
-    /**
-     * @param models
-     * @return
-     * 添加多个model,如有需要
-     */
-    public abstract HashMap<String, IModel> loadModelMap(IModel... models);
+//    public abstract HashMap<String, IModel> getiModelMap();
+
+//    /**
+//     * @param models
+//     * @return
+//     * 添加多个model,如有需要
+//     */
+//    public abstract HashMap<String, IModel> loadModelMap(IModel... models);
 
     /*********************************** RX 生命周期管理 ***************************************/
 

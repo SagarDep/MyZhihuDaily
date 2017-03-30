@@ -8,18 +8,19 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.CallSuper;
-import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import rx.subjects.BehaviorSubject;
 
 /**
  * Created by zy1584 on 2017-3-27.
@@ -48,10 +48,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected String TAG;
     protected LayoutInflater mInflater;
     protected Activity activity;
+    protected FragmentTransaction transaction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (isFullScreen())
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN); // 隐藏android系统的状态栏
         setContentView(getLayoutId());
         mPresenter = loadPresenter();
         initCommonData();
@@ -67,6 +71,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             handleIntent(getIntent());
         }
         doBusiness();// 需要时可以复写
+    }
+
+    protected boolean isFullScreen() {
+        return false;
     }
 
     protected void handleIntent(Intent intent) {}
@@ -95,6 +103,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         TAG = this.getClass().getSimpleName();
         mInflater = getLayoutInflater();
         activity = this;
+        transaction = getSupportFragmentManager().beginTransaction();
     }
 
     /**
@@ -106,86 +115,19 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         tintManager.setTintColor(getResources().getColor(R.color.colorPrimary));
     }
 
-    /**
-     * 统一初始化titlebar
-     */
-    protected Toolbar initToolBar(String title) {
-        ImageView ivBack = (ImageView) findViewById(R.id.toolbar_back);
-        TextView tvTitle = (TextView) findViewById(R.id.toolbar_title);
-        tvTitle.setText(title);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (null != toolbar) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        return toolbar;
+    /******************************************* activity生命周期封装 ***********************************************/
+
+    @Override
+    protected void onDestroy() {
+        ActivityCollector.removeActivity(this);// activity管理
+        mPresenter.unsubscribe();// rx生命周期管理
+        super.onDestroy();
     }
 
-    /**
-     * 统一初始化titlebar右侧图片
-     */
-    protected Toolbar initToolBarRightImg(String title, int rightId, final OnRightClickListener listener) {
-        ImageView ivBack = (ImageView) findViewById(R.id.toolbar_back);
-        TextView tvTitle = (TextView) findViewById(R.id.toolbar_title);
-        tvTitle.setText(title);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (null != toolbar) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        ImageView ivRight = (ImageView) findViewById(R.id.toolbar_iv_menu);
-        ivRight.setImageResource(rightId);
-        ivRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.rightClick();
-            }
-        });
-        return toolbar;
-    }
+    /******************************************* toolbar封装 ***********************************************/
 
 
-    /**
-     * 统一初始化titlebar右侧文字
-     */
-    protected Toolbar initToolBarRightTxt(String title, String right, final OnRightClickListener listener) {
-        ImageView ivBack = (ImageView) findViewById(R.id.toolbar_back);
-        TextView tvTitle = (TextView) findViewById(R.id.toolbar_title);
-        tvTitle.setText(title);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (null != toolbar) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        TextView tvRight = (TextView) findViewById(R.id.toolbar_tv_menu);
-        tvRight.setText(right);
-        tvRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.rightClick();
-            }
-        });
-        return toolbar;
-    }
-
+    /******************************************* 高频操作封装 ***********************************************/
     /**
      * 打开一个Activity 默认 不关闭当前activity
      */
@@ -227,11 +169,61 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         Logger.t(TAG).i(str);
     }
 
+    /******************************************* fragment操作封装 ***********************************************/
+
+    /**
+     * 添加fragment
+     *
+     * @param fragment
+     * @param contentId
+     * @param addToBackStack
+     */
+    public void addFragment(BaseFragment fragment, int contentId, boolean addToBackStack) {
+        if (fragment != null) {
+            transaction.add(contentId, fragment, fragment.getClass().getSimpleName());
+            if (addToBackStack) {
+                transaction.addToBackStack("");
+            }
+            transaction.commit();
+        }
+    }
+
+    /**
+     * 替换fragment
+     *
+     * @param fragment
+     * @param contentId
+     * @param addToBackStack
+     */
+    public void replaceFragment(BaseFragment fragment, int contentId, boolean addToBackStack) {
+
+        transaction.replace(contentId, fragment, fragment.getClass().getSimpleName());
+        if (addToBackStack) {
+            transaction.addToBackStack("");
+        }
+        transaction.commit();
+
+    }
+
+    //移除fragment
+    protected void doBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            finish();
+        }
+    }
+
+    //返回键返回事件
     @Override
-    protected void onDestroy() {
-        ActivityCollector.removeActivity(this);// activity管理
-        mPresenter.unsubscribe();// rx生命周期管理
-        super.onDestroy();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_BACK == keyCode) {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                finish();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /******************************************* Android 6.0权限封装 ***********************************************/

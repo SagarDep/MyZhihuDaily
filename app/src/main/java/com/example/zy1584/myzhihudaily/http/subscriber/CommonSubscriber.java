@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 
 import com.example.zy1584.myzhihudaily.http.exception.ApiException;
 import com.example.zy1584.myzhihudaily.utils.NetUtils;
+import com.example.zy1584.myzhihudaily.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
 import rx.Subscriber;
@@ -55,6 +56,7 @@ public abstract class CommonSubscriber<T> extends Subscriber<T> {
     @Override
     public void onError(Throwable e) {
         dismissProgressDialog();
+        ToastUtils.showShort(context, "数据加载失败ヽ(≧Д≦)ノ");
         Logger.t(TAG).e(e, "错误信息为 " + "code:" + e.getMessage());
     }
 

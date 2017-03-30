@@ -7,5 +7,6 @@ package com.example.zy1584.myzhihudaily.utils;
  *
  */
 public class GlobalParams {
-
+    public static final String LAUNCH_IMG_URL = "launch_img_url";
+    public static final String NO_IMAGE_MODE = "no_image_mode";
 }
