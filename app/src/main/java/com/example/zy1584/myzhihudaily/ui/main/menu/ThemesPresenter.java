@@ -16,8 +16,7 @@ public class ThemesPresenter extends BasePresenter<MenuFragment> implements Them
     @Override
     public void getThemes() {
         Subscription subscribe = new ThemesBiz().getThemes().compose(new CommonTransformer<ThemesBean>
-                ()).subscribe(new CommonSubscriber<ThemesBean>(getIView().getContext(), false,
-                true) {
+                ()).subscribe(new CommonSubscriber<ThemesBean>() {
             @Override
             public void onNext(ThemesBean bean) {
                 getIView().onSuccess(bean);

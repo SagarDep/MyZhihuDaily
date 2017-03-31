@@ -1,4 +1,4 @@
-package com.example.zy1584.myzhihudaily.ui.main.news.adapter;
+package com.example.zy1584.myzhihudaily.ui.main.dailyStories.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.zy1584.myzhihudaily.R;
 import com.example.zy1584.myzhihudaily.base.BaseItem;
-import com.example.zy1584.myzhihudaily.ui.main.news.bean.NewsLatestBean;
+import com.example.zy1584.myzhihudaily.ui.main.dailyStories.bean.DailyStoriesBean;
 import com.example.zy1584.myzhihudaily.utils.GlobalParams;
 import com.example.zy1584.myzhihudaily.utils.NetUtils;
 import com.example.zy1584.myzhihudaily.utils.SPUtils;
@@ -21,7 +21,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
  * Created by OO on 2017/2/13.
  */
 
-class NewsListItemDelegate implements ItemViewDelegate<BaseItem> {
+class DailyStoriesItemDelegate implements ItemViewDelegate<BaseItem> {
     private Context mContext;
 
     @Override
@@ -31,13 +31,13 @@ class NewsListItemDelegate implements ItemViewDelegate<BaseItem> {
 
     @Override
     public boolean isForViewType(BaseItem item, int position) {
-        return item instanceof NewsLatestBean.StoriesBean;
+        return item instanceof DailyStoriesBean.StoriesBean;
     }
 
     @Override
     public void convert(ViewHolder holder, BaseItem baseItem, int position) {
 
-        final NewsLatestBean.StoriesBean stories = (NewsLatestBean.StoriesBean) baseItem;
+        final DailyStoriesBean.StoriesBean stories = (DailyStoriesBean.StoriesBean) baseItem;
         holder.setText(R.id.title, stories.getTitle());
         mContext = holder.getConvertView().getContext();
         if ((boolean) SPUtils.get(GlobalParams.NO_IMAGE_MODE, false)
@@ -53,6 +53,9 @@ class NewsListItemDelegate implements ItemViewDelegate<BaseItem> {
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into((ImageView) holder.getView(R.id.image));
+        }
+        if (!stories.isMultipic()) {
+            holder.getView(R.id.multiPic).setVisibility(View.INVISIBLE);
         }
         holder.setOnClickListener(R.id.cardView, new View.OnClickListener() {
             @Override

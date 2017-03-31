@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.zy1584.myzhihudaily.R;
-import com.example.zy1584.myzhihudaily.ui.main.news.bean.NewsLatestBean;
+import com.example.zy1584.myzhihudaily.ui.main.dailyStories.bean.DailyStoriesBean;
 import com.example.zy1584.myzhihudaily.utils.GlobalParams;
 import com.example.zy1584.myzhihudaily.utils.NetUtils;
 import com.example.zy1584.myzhihudaily.utils.SPUtils;
@@ -35,7 +35,7 @@ public class Banner extends RelativeLayout {
 
     private BannerAdapter mAdapter;
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
-    private List<NewsLatestBean.TopStoriesBean> mDataList;
+    private List<DailyStoriesBean.TopStoriesBean> mDataList;
     private final List<ImageView> mViewList = new ArrayList<>();
     private int lastPosition;
     private boolean isAutoPlay = true;
@@ -63,7 +63,7 @@ public class Banner extends RelativeLayout {
         mTextView = (TextView) view.findViewById(R.id.title);
     }
 
-    public Banner setDataList(List<NewsLatestBean.TopStoriesBean> dataList) {
+    public Banner setDataList(List<DailyStoriesBean.TopStoriesBean> dataList) {
         mDataList = dataList;
         return this;
     }

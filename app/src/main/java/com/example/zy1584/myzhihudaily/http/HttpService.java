@@ -2,9 +2,9 @@ package com.example.zy1584.myzhihudaily.http;
 
 
 import com.example.zy1584.myzhihudaily.ui.launch.LaunchImageBean;
-import com.example.zy1584.myzhihudaily.ui.main.news.bean.NewsBeforeBean;
-import com.example.zy1584.myzhihudaily.ui.main.news.bean.NewsLatestBean;
+import com.example.zy1584.myzhihudaily.ui.main.dailyStories.bean.DailyStoriesBean;
 import com.example.zy1584.myzhihudaily.ui.main.menu.bean.ThemesBean;
+import com.example.zy1584.myzhihudaily.ui.main.otherStories.OtherStoriesBean;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -29,9 +29,15 @@ public interface HttpService {
     Observable<ThemesBean> getThemes();
 
     @GET("api/4/news/latest")
-    Observable<NewsLatestBean> getLatestNews();
+    Observable<DailyStoriesBean> getLatestNews();
 
     @GET("api/4/news/before/{date}")
-    Observable<NewsBeforeBean> getBeforeNews(@Path("date") String date);
+    Observable<DailyStoriesBean> getBeforeNews(@Path("date") String date);
+
+    @GET("/api/4/theme/{id}")
+    Observable<OtherStoriesBean> getThemesContent(@Path("id") int id);
+
+    @GET("/api/4/theme/{id}/before/{story_id}")
+    Observable<OtherStoriesBean> getBeforeThemesContent(@Path("id") int id, @Path("story_id") int story_id);
 
 }

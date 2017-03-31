@@ -7,4 +7,6 @@
     <string name="action_settings">设置选项</string>
     <string name="action_notification">通知</string>
     <string name="action_night">夜间模式</string>
+
+    <string name="loading">正在加载…</string>
 </resources>

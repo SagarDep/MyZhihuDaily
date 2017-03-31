@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import com.example.zy1584.myzhihudaily.http.exception.ApiException;
 import com.example.zy1584.myzhihudaily.utils.NetUtils;
 import com.example.zy1584.myzhihudaily.utils.ToastUtils;
+import com.example.zy1584.myzhihudaily.utils.UIUtils;
 import com.orhanobut.logger.Logger;
 
 import rx.Subscriber;
@@ -23,13 +24,12 @@ public abstract class CommonSubscriber<T> extends Subscriber<T> {
     /*加载框可自己定义*/
     private ProgressDialog pd;
     /*是否弹框*/
-    private boolean isShowProgress = true;
+    private boolean isShowProgress = false;
     /*弹框是否能取消*/
     private boolean isCancelable = true;
 
-    public CommonSubscriber(Context context) {
-        this.context = context;
-        initProgressDialog(isCancelable);
+    public CommonSubscriber() {
+        this.context = UIUtils.getContext();
     }
 
     public CommonSubscriber(Context context, boolean isShowProgress, boolean isCancelable) {

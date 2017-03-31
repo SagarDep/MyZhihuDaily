@@ -1,14 +1,15 @@
-package com.example.zy1584.myzhihudaily.ui.main.news.bean;
+package com.example.zy1584.myzhihudaily.ui.main.dailyStories.bean;
 
 import com.example.zy1584.myzhihudaily.base.BaseItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by zy1584 on 2017-3-30.
  */
 
-public class NewsLatestBean {
+public class DailyStoriesBean {
 
     /**
      * date : 20170330
@@ -55,8 +56,8 @@ public class NewsLatestBean {
      */
 
     private String date;
-    private List<StoriesBean> stories;
-    private List<TopStoriesBean> top_stories;
+    private List<StoriesBean> stories = new ArrayList<>();
+    private List<TopStoriesBean> top_stories = new ArrayList<>();
 
     public String getDate() {
         return date;
@@ -97,7 +98,7 @@ public class NewsLatestBean {
         private String ga_prefix;
         private String title;
         private boolean multipic;
-        private List<String> images;
+        private List<String> images = new ArrayList<>();
 
         public int getType() {
             return type;

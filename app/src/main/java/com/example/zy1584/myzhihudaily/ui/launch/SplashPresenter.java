@@ -16,7 +16,7 @@ public class SplashPresenter extends BasePresenter<SplashActivity> implements La
     @Override
     public void getLaunchImage() {
         Subscription subscribe = new SplashBiz().getLaunchImage().compose(new
-                CommonTransformer<LaunchImageBean>()).subscribe(new CommonSubscriber<LaunchImageBean>(getIView(), false, true) {
+                CommonTransformer<LaunchImageBean>()).subscribe(new CommonSubscriber<LaunchImageBean>() {
             @Override
             public void onNext(LaunchImageBean bean) {
                 getIView().onSuccess(bean);

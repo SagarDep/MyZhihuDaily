@@ -1,10 +1,10 @@
-package com.example.zy1584.myzhihudaily.ui.main.news.adapter;
+package com.example.zy1584.myzhihudaily.ui.main.dailyStories.adapter;
 
 import android.content.Context;
 
 import com.example.zy1584.myzhihudaily.R;
 import com.example.zy1584.myzhihudaily.base.BaseItem;
-import com.example.zy1584.myzhihudaily.ui.main.news.bean.NewsListHeader;
+import com.example.zy1584.myzhihudaily.ui.main.dailyStories.bean.DailyStoriesHeader;
 import com.example.zy1584.myzhihudaily.widget.Banner.Banner;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -14,7 +14,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
  * Created by OO on 2017/2/15.
  */
 
-class NewsListHeaderDelegate implements ItemViewDelegate<BaseItem> {
+class DailyStoriesHeaderDelegate implements ItemViewDelegate<BaseItem> {
     private Context mContext;
 
     @Override
@@ -24,15 +24,15 @@ class NewsListHeaderDelegate implements ItemViewDelegate<BaseItem> {
 
     @Override
     public boolean isForViewType(BaseItem item, int position) {
-        return item instanceof NewsListHeader;
+        return item instanceof DailyStoriesHeader;
     }
 
     @Override
     public void convert(ViewHolder holder, BaseItem baseItem, int position) {
         mContext = holder.getConvertView().getContext();
-        final NewsListHeader newsListHeader = (NewsListHeader) baseItem;
+        final DailyStoriesHeader dailyStoriesHeader = (DailyStoriesHeader) baseItem;
         Banner banner = holder.getView(R.id.banner);
-        banner.setDataList(newsListHeader.getTopStories())
+        banner.setDataList(dailyStoriesHeader.getTopStories())
                 .start();
 
         banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {

@@ -10,4 +10,5 @@
     <color name="drawer_select">#EEEEEE</color>
     <color name="drawer_normal">@android:color/white</color>
 
+    <color name="text_color">@android:color/black</color>
 </resources>

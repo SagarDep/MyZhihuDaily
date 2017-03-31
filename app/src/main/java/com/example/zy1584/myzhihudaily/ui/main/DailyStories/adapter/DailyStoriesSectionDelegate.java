@@ -1,8 +1,8 @@
-package com.example.zy1584.myzhihudaily.ui.main.news.adapter;
+package com.example.zy1584.myzhihudaily.ui.main.dailyStories.adapter;
 
 import com.example.zy1584.myzhihudaily.R;
 import com.example.zy1584.myzhihudaily.base.BaseItem;
-import com.example.zy1584.myzhihudaily.ui.main.news.bean.NewsListSection;
+import com.example.zy1584.myzhihudaily.ui.main.dailyStories.bean.DailyStoriesSection;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -11,7 +11,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
  * Created by OO on 2017/2/14.
  */
 
-class NewsListSectionDelegate implements ItemViewDelegate<BaseItem> {
+class DailyStoriesSectionDelegate implements ItemViewDelegate<BaseItem> {
     @Override
     public int getItemViewLayoutId() {
         return R.layout.item_story_section;
@@ -19,7 +19,7 @@ class NewsListSectionDelegate implements ItemViewDelegate<BaseItem> {
 
     @Override
     public boolean isForViewType(BaseItem item, int position) {
-        return item instanceof NewsListSection;
+        return item instanceof DailyStoriesSection;
     }
 
     @Override
@@ -27,7 +27,7 @@ class NewsListSectionDelegate implements ItemViewDelegate<BaseItem> {
         if (position == 1) {
             holder.setText(R.id.story_section, "今日热闻");
         } else {
-            holder.setText(R.id.story_section, ((NewsListSection) baseItem).getDate());
+            holder.setText(R.id.story_section, ((DailyStoriesSection) baseItem).getDate());
         }
     }
 }

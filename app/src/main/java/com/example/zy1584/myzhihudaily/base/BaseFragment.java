@@ -7,6 +7,9 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +54,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (null != getArguments()) {
+            handleArguments(getArguments());
+        }
         // 避免多次从xml中加载布局文件
         if (mContentView == null) {
             mContentView = inflater.inflate(getLayoutId(), null);
@@ -66,6 +72,8 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         }
         return mContentView;
     }
+
+    protected void handleArguments(Bundle arguments) {}
 
     protected abstract int getLayoutId();
 
@@ -90,6 +98,12 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     public void LogI(String str) {
         Logger.t(TAG).i(str);
+    }
+
+    protected void initRecyclerView(RecyclerView recyclerView){
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override

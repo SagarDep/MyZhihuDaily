@@ -15,14 +15,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.zy1584.myzhihudaily.R;
 import com.example.zy1584.myzhihudaily.interfaces.IView;
@@ -47,8 +47,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     protected String TAG;
     protected LayoutInflater mInflater;
-    protected Activity activity;
-    protected FragmentTransaction transaction;
+    protected Activity mActivity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,8 +101,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     private void initPublicMembers() {
         TAG = this.getClass().getSimpleName();
         mInflater = getLayoutInflater();
-        activity = this;
-        transaction = getSupportFragmentManager().beginTransaction();
+        mActivity = this;
     }
 
     /**
@@ -169,6 +167,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         Logger.t(TAG).i(str);
     }
 
+    protected void initRecyclerView(RecyclerView recyclerView){
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
     /******************************************* fragment操作封装 ***********************************************/
 
     /**
@@ -180,6 +184,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      */
     public void addFragment(BaseFragment fragment, int contentId, boolean addToBackStack) {
         if (fragment != null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(contentId, fragment, fragment.getClass().getSimpleName());
             if (addToBackStack) {
                 transaction.addToBackStack("");
@@ -196,7 +201,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      * @param addToBackStack
      */
     public void replaceFragment(BaseFragment fragment, int contentId, boolean addToBackStack) {
-
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(contentId, fragment, fragment.getClass().getSimpleName());
         if (addToBackStack) {
             transaction.addToBackStack("");
