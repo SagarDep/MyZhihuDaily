@@ -13,16 +13,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 import com.example.zy1584.myzhihudaily.R;
 import com.example.zy1584.myzhihudaily.interfaces.IView;
@@ -41,7 +47,7 @@ import butterknife.ButterKnife;
  */
 
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements
-        IView {
+        IView, View.OnClickListener {
     protected View view;
     protected P mPresenter;
 
@@ -71,6 +77,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
         doBusiness();// 需要时可以复写
     }
+
+    @Override
+    public void onClick(View v) {}
 
     protected boolean isFullScreen() {
         return false;
@@ -122,8 +131,41 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         super.onDestroy();
     }
 
+    /******************************************* webView封装 ***********************************************/
+
+    protected void initWebView(WebView webView) {
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setLoadWithOverviewMode(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setSupportZoom(false);
+        settings.setAppCachePath(getCacheDir().getAbsolutePath() + "/webViewCache");
+        settings.setAppCacheEnabled(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webView.setWebChromeClient(new WebChromeClient());
+    }
+
     /******************************************* toolbar封装 ***********************************************/
 
+    protected void initToolBar(Toolbar toolbar, boolean isShowTitle, boolean isShowBackBtn){
+        if (toolbar != null){
+            setSupportActionBar(toolbar);
+            ActionBar supportActionBar = getSupportActionBar();
+            supportActionBar.setDisplayShowTitleEnabled(isShowTitle);
+            supportActionBar.setDisplayHomeAsUpEnabled(isShowBackBtn);
+            if (isShowBackBtn){
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        doBackPressed();
+                    }
+                });
+            }
+        }
+    }
 
     /******************************************* 高频操作封装 ***********************************************/
     /**

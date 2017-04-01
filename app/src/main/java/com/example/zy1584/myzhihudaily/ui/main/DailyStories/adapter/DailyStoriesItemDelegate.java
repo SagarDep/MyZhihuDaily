@@ -1,6 +1,7 @@
 package com.example.zy1584.myzhihudaily.ui.main.dailyStories.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -9,6 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.zy1584.myzhihudaily.R;
 import com.example.zy1584.myzhihudaily.base.BaseItem;
 import com.example.zy1584.myzhihudaily.ui.main.dailyStories.bean.DailyStoriesBean;
+import com.example.zy1584.myzhihudaily.ui.newsDetail.StoryContentActivity;
 import com.example.zy1584.myzhihudaily.utils.GlobalParams;
 import com.example.zy1584.myzhihudaily.utils.NetUtils;
 import com.example.zy1584.myzhihudaily.utils.SPUtils;
@@ -60,9 +62,9 @@ class DailyStoriesItemDelegate implements ItemViewDelegate<BaseItem> {
         holder.setOnClickListener(R.id.cardView, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(mContext, StoryContentActivity.class);
-//                intent.putExtra("id", stories.getId());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, StoryContentActivity.class);
+                intent.putExtra(GlobalParams.STORY_ID, stories.getId());
+                mContext.startActivity(intent);
             }
         });
     }
